@@ -66,6 +66,15 @@ dependencies {
     implementation(libs.supabase.realtime)
     implementation(libs.supabase.storage)
 
+    // KTOR
+    implementation(libs.ktor.ktor.client.android)
+
     // LOGGING
     implementation(libs.logging.android)
+
+    // KOIN
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.compose.navigation)
 }

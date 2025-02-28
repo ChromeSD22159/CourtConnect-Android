@@ -12,22 +12,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import de.frederikkohler.courtconnect.data.repository.Repository
+import de.frederikkohler.courtconnect.di.myModule
 import de.frederikkohler.courtconnect.ui.theme.CourtConnectTheme
+import de.frederikkohler.courtconnect.viewModel.SignInViewModel
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.context.startKoin
 
 class MainActivity : ComponentActivity() {
-    val repository = Repository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            CourtConnectTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+
+        startKoin {
+            modules(myModule)
+
+            setContent {
+                CourtConnectTheme {
+                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                        val viewModel: SignInViewModel = koinViewModel<SignInViewModel>()
+                        viewModel.user?.let {
+                            LoginScreen(
+                                name = "Android ${it.id}",
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -51,3 +61,4 @@ fun LoginScreenPreview() {
         modifier = Modifier.padding()
     )
 }
+
